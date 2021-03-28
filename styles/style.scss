@@ -1,0 +1,42 @@
+// @import "../partial/mixins";
+// @import "../partial/variables";
+
+html {
+    font-size: 10px;
+}
+
+body {
+    background:#1D2733;
+}
+
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.topics {
+    display: flex;
+    justify-content: space-around;
+    padding: 3rem;
+
+    .topics__item {
+        border: 1px solid #9BA8B8;
+        padding: 1rem 2rem;
+        font-size: 1.6rem;
+        text-transform: uppercase;
+        border-radius: .4rem;
+        color: white;
+        background:#3F4C5C;
+        box-shadow: 0 0 8px 1px #9BA8B8;
+        transition: all .3s ease;
+        cursor: pointer;
+
+        &:hover {
+            background:#485565;
+            box-shadow: 0 0 8px 2px #9BA8B8;
+        }
+    }
+}
+
+
+
