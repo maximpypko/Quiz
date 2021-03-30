@@ -17,26 +17,33 @@ body {
 .topics {
     display: flex;
     justify-content: space-around;
-    padding: 3rem;
+    margin-top: 5rem;
 
     .topics__item {
-        border: 1px solid #9BA8B8;
         padding: 1rem 2rem;
         font-size: 1.6rem;
         text-transform: uppercase;
+        border: 1px solid #9BA8B8;
         border-radius: .4rem;
-        color: white;
+        color: #76879A;
         background:#3F4C5C;
-        box-shadow: 0 0 8px 1px #9BA8B8;
+        box-shadow: 0 0 1rem 0  #76879A;
         transition: all .3s ease;
         cursor: pointer;
-
         &:hover {
-            background:#485565;
-            box-shadow: 0 0 8px 2px #9BA8B8;
+            box-shadow: 0 0 1rem 0 white;
+            color: white;
         }
+    }
+    #topics__item--activ {
+        box-shadow: 0 0 1rem 0 white;
+        color: white;
     }
 }
 
+.questions__item {
+    color: burlywood;
+    font-size: 2rem;
+}
 
 
