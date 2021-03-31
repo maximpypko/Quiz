@@ -6,7 +6,7 @@ const questions = {
             option3: 'Вариант 3',
             option4: 'Вариант 4',
             question:'math1?',
-            correctAnswer: 'qq1'
+            correctAnswer: 'Вариант 4'
         },
         {
             option1: 'Вариант 21',
@@ -14,7 +14,7 @@ const questions = {
             option3: 'Вариант 23',
             option4: 'Вариант 24',
             question:'math2?',
-            correctAnswer: 'qq2'
+            correctAnswer: 'Вариант 21'
         },
         {
             option1: 'Вариант 31',
@@ -22,7 +22,7 @@ const questions = {
             option3: 'Вариант 33',
             option4: 'Вариант 34',
             question:'math3?',
-            correctAnswer: 'qqq3'
+            correctAnswer: 'Вариант 33'
         },
         {
             option1: 'Вариант 41',
@@ -30,7 +30,7 @@ const questions = {
             option3: 'Вариант 43',
             option4: 'Вариант 44',
             question:'math3?',
-            correctAnswer: 'qqq3'
+            correctAnswer: 'Вариант 44'
         },
         {
             option1: 'Вариант 51',
@@ -38,7 +38,7 @@ const questions = {
             option3: 'Вариант 53',
             option4: 'Вариант 54',
             question:'math3?',
-            correctAnswer: 'qqq3'
+            correctAnswer: 'Вариант 52'
         },
         {
             option1: 'Вариант 61',
@@ -46,7 +46,7 @@ const questions = {
             option3: 'Вариант 63',
             option4: 'Вариант 64',
             question:'math3?',
-            correctAnswer: 'qqq3'
+            correctAnswer: 'Вариант 63'
         },
     ],
     geography: [
@@ -87,7 +87,8 @@ const questions = {
 
 class Quiz {
     $topicsContainer = document.querySelector('.topics')
-    
+    $QuestionsContainer = document.querySelector('.questions');
+    result = [];
 
     constructor(questions) {
         this.questions = questions;
@@ -95,7 +96,9 @@ class Quiz {
     }
 
     getTopicQuestions() {
+        
         this.$topicsContainer.addEventListener('click', e => {
+            
             if (e.target.tagName === 'BUTTON' &&
                 this.$topicsContainer.nextElementSibling.childNodes.length === 0) {
 
@@ -104,37 +107,40 @@ class Quiz {
                 
                 const topicName = e.target.textContent.toLowerCase();
                 this.renderTopic(this.questions[topicName]);
+            } else if (e.target.tagName === 'BUTTON' &&
+                this.$topicsContainer.nextElementSibling.childNodes) {
+                this.$topicsContainer.nextElementSibling.firstChild.remove();
             }
         })
     }
 
     renderTopic(topicQuestion, count = 0) {
-        const $QuestionsContainer = document.querySelector('.questions');
-        const $QuestionsList = document.createElement('ul');
-        $QuestionsList.classList.add('questions__list');
 
-            for (let index = 1; index < 5; index++) {
-                
-            const $QuestionsItem = document.createElement('li');
-            $QuestionsItem.classList.add('questions__item');
-            const optionNumber = 'option' + (index);
-            $QuestionsItem.textContent = topicQuestion[count][optionNumber];
-            $QuestionsList.append($QuestionsItem);
+        if (this.$QuestionsContainer.firstChild) {
+            this.$QuestionsContainer.firstChild.remove()
         }
 
-        $QuestionsContainer.append($QuestionsList);
+        this.$QuestionsContainer.insertAdjacentHTML('afterbegin',
+            `<div class = 'question__wrapper'>
+                <h1 class = 'question__title'>${topicQuestion[count].question}</h1>
+                <ul class = 'question__list'>
+                    <li class = 'question__item'>${topicQuestion[count].option1}</li>
+                    <li class = 'question__item'>${topicQuestion[count].option2}</li>
+                    <li class = 'question__item'>${topicQuestion[count].option3}</li>
+                    <li class = 'question__item'>${topicQuestion[count].option4}</li>
+                </ul>
+                <button class = 'questions__skip'>Skip</button>
+            </div>`
+        )
         
-        $QuestionsContainer.insertAdjacentHTML('beforeend',
-            `<button class = 'questions__next'>Next</button>`)
-        const $ButtonNext = document.querySelector('.questions__next');
-        
-        $ButtonNext.addEventListener('click', () => {
-            if (count < topicQuestion.length - 1) {
-                $QuestionsList.remove()
-                $ButtonNext.remove()
+        this.$QuestionsContainer.addEventListener('click', (e) => {
+            e.stopImmediatePropagation()
+
+            if (e.target.closest('.question__item') && count < topicQuestion.length - 1) {
                 this.renderTopic(topicQuestion, ++count)
-            } else {
-                return
+
+            } else if(count === topicQuestion.length - 1) {
+                console.log('end');
             }
         })    
     }
