@@ -41,6 +41,11 @@ body {
     }
 }
 
+.question__title {
+    font-size: 3rem;
+    color: white;
+}
+
 .question__item {
     margin-bottom: 3rem;
     border:1px solid red;
@@ -48,4 +53,14 @@ body {
     font-size: 2rem;
 }
 
+.question__item--green {
+    background-color: green;
+}
 
+.question__item--red {
+    background-color: red;
+}
+ .question__result {
+    color: burlywood;
+    font-size: 2rem;
+ }
