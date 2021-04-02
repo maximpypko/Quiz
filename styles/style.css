@@ -83,7 +83,18 @@ body {
   -webkit-box-shadow: 0 0 1rem 0.3rem #FFF;
           box-shadow: 0 0 1rem 0.3rem #FFF;
   border: 1px solid #FFF;
-  color: #FFF;
+}
+
+.questions__wrapper .questions__list .questions__item--correctAnswer {
+  -webkit-box-shadow: 0 0 1rem .5rem #46FF4F;
+          box-shadow: 0 0 1rem .5rem #46FF4F;
+  pointer-events: none;
+}
+
+.questions__wrapper .questions__list .questions__item--wrongAnswer {
+  -webkit-box-shadow: 0 0 1rem .5rem #FF0800;
+          box-shadow: 0 0 1rem .5rem #FF0800;
+  pointer-events: none;
 }
 
 .questions__wrapper .questions__result {

@@ -55,8 +55,15 @@ body {
             &:hover {
                 @include hoverBoxShadow;
                 border: 1px solid $activElementColor;
-                color: $activElementColor;
             }
+        }
+        .questions__item--correctAnswer {
+            box-shadow : 0 0 1rem .5rem #46FF4F;
+            pointer-events:none;
+        }
+        .questions__item--wrongAnswer {
+            box-shadow : 0 0 1rem .5rem #FF0800;
+            pointer-events:none;
         }
     }
     .questions__result {

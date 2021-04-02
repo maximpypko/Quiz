@@ -349,12 +349,19 @@ class Quiz {
             
             if (e.target.closest('.questions__item') && this.count < this.activTopic.length - 1) {
                 this.checksAnswer(this.activTopic[this.count].correctAnswer, e.target);
-                this.renderTopic(++this.count);
+                ++this.count;
+
+                e.target.textContent === this.activTopic[this.count - 1].correctAnswer ?
+                    e.target.classList.add('questions__item--correctAnswer') :
+                    e.target.classList.add('questions__item--wrongAnswer');
                 
+                setTimeout(() => this.renderTopic(), 2000)
+
             } else if (e.target.closest('.questions__skip') &&
                 this.count < this.activTopic.length - 1) {
                 this.result.push(0);
-                this.renderTopic(++this.count);
+                ++this.count;
+                this.renderTopic();
 
             } else if (e.target.closest('.questions__end') &&
                 this.count <= this.activTopic.length - 1) {
