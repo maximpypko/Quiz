@@ -22,7 +22,7 @@ const questions = {
             option3: 'Вырвать с корнями дерево',
             option4: 'Разрушить здание',
             question:'Чего не может торнадо?',
-            correctAnswer: 'Стоять на мест'
+            correctAnswer: 'Стоять на месте'
         },
         {
             option1: 'Приправу',
@@ -81,7 +81,7 @@ const questions = {
             correctAnswer: 'Жемчуг'
         }
     ],
-    geography: [
+    'geography': [
         {
             option1: 'q',
             option2: 'qq',
@@ -121,6 +121,8 @@ class Quiz {
     $topicsContainer = document.querySelector('.topics')
     $QuestionsContainer = document.querySelector('.questions');
     result = [];
+    activTopic = null;
+    count = null;
 
     constructor(questions) {
         this.questions = questions;
@@ -128,91 +130,111 @@ class Quiz {
     }
 
     getTopicQuestions() {
-        
+    
         this.$topicsContainer.addEventListener('click', e => {
-            
-            if (e.target.tagName === 'BUTTON' &&
-                this.$topicsContainer.nextElementSibling.childNodes.length === 0) {
+           
+            if (e.target.tagName === 'BUTTON' && this.$QuestionsContainer.childNodes.length === 0) {
+                e.target.classList.add('topics__item--activ');
 
-                const activeElement = document.querySelector('#topics__item--activ');
-                activeElement ? activeElement.id = '' : e.target.id = 'topics__item--activ';
-                
+                const arrayTarget = Array.from(e.target.parentElement.children);
+                arrayTarget.map(el =>  el.disabled = true);
+
                 const topicName = e.target.textContent.toLowerCase();
-                this.renderTopic(this.questions[topicName]);
-            } else if (e.target.tagName === 'BUTTON' &&
-                this.$topicsContainer.nextElementSibling.childNodes) {
-                this.$topicsContainer.nextElementSibling.firstChild.remove();
+                this.activTopic = this.questions[topicName];
+                this.count = 0;
+                this.renderTopic();
             }
         })
     }
 
-    renderTopic(topicQuestion, count = 0) {
+    renderTopic() {
         
         if (this.$QuestionsContainer.firstChild) {
-            this.$QuestionsContainer.firstChild.remove();
+            this.$QuestionsContainer.firstChild.remove(); 
         }
-
-        this.$QuestionsContainer.insertAdjacentHTML('afterbegin',
-            `<div class = 'question__wrapper'>
-                <h1 class = 'question__title'>${topicQuestion[count].question}</h1>
-                <ul class = 'question__list'>
-                    <li class = 'question__item'>${topicQuestion[count].option1}</li>
-                    <li class = 'question__item'>${topicQuestion[count].option2}</li>
-                    <li class = 'question__item'>${topicQuestion[count].option3}</li>
-                    <li class = 'question__item'>${topicQuestion[count].option4}</li>
-                </ul>
-                <button class = 'questions__skip'>Пропустить вопрос</button>
-            </div>`
-        )
         
-        this.$QuestionsContainer.addEventListener('click', (e) => {
-            e.stopImmediatePropagation();
-
-            if (e.target.closest('.question__item') && count < topicQuestion.length - 1) {
-                
-                this.checksAnswer(e.target.textContent,topicQuestion[count].correctAnswer,e.target);
-                this.renderTopic(topicQuestion, ++count);
-
-            } else if (e.target.closest('.questions__skip') && count < topicQuestion.length - 1) {
-                this.result.push(0);
-                this.renderTopic(topicQuestion, ++count);
-
-            } else if (count === topicQuestion.length - 1) {
-                this.checksAnswer(e.target.textContent, topicQuestion[count].correctAnswer, e.target);
-                
-                this.getResult();
-                count = 0;
-            }
-        })    
+        this.$QuestionsContainer.insertAdjacentHTML('afterbegin',
+            `<div class = 'questions__wrapper'>
+                <h1 class = 'questions__title'>${this.activTopic[this.count].question}</h1>
+                <ul class = 'questions__list'>
+                    <li class = 'questions__item'>${this.activTopic[this.count].option1}</li>
+                    <li class = 'questions__item'>${this.activTopic[this.count].option2}</li>
+                    <li class = 'questions__item'>${this.activTopic[this.count].option3}</li>
+                    <li class = 'questions__item'>${this.activTopic[this.count].option4}</li>
+                </ul>
+                <div class = 'questions__buttons'>
+                    <button class = 'questions__skip'>Пропустить вопрос</button>
+                    <button class = 'questions__end'>Закончить тест</button>
+                    <div class = 'questions__index'>${this.count + 1} из ${this.activTopic.length}</div>
+                </div>
+            </div>`
+        );
+        this.handlerClick();
     }
 
-    checksAnswer(option, correctAnswer, target) {
-        
-        if (option === correctAnswer) {
-            target.classList.add('question__item--green');
-            this.result.push(1);
-           
-        } else {
-            target.classList.add('question__item--red');
-            this.result.push(0);
-        }
+    handlerClick() {
+
+        this.$QuestionsContainer.addEventListener('click', (e) => {
+            e.stopImmediatePropagation();
+            
+            if (e.target.closest('.questions__item') && this.count < this.activTopic.length - 1) {
+                this.checksAnswer(this.activTopic[this.count].correctAnswer, e.target);
+                this.renderTopic(++this.count);
+                
+            } else if (e.target.closest('.questions__skip') &&
+                this.count < this.activTopic.length - 1) {
+                this.result.push(0);
+                this.renderTopic(++this.count);
+
+            } else if (e.target.closest('.questions__end') &&
+                this.count <= this.activTopic.length - 1) {
+                this.result = [];
+                this.resetStateTopicItem();
+
+            } else if (e.target.closest('.questions__next-test')) {
+                this.resetStateTopicItem();
+            }
+                
+            else if (this.count === this.activTopic.length - 1) {
+                this.checksAnswer(this.activTopic[this.count].correctAnswer, e.target);
+                this.getResult();
+                this.count = 0;
+            } 
+        })
+    }
+
+    resetStateTopicItem() {
+        this.$QuestionsContainer.firstChild.remove();
+        const arrayTarget = Array.from(this.$topicsContainer.children);
+        arrayTarget.map(el => {
+            el.disabled = false;
+            if (el.closest('.topics__item--activ')) {
+                el.classList.remove('topics__item--activ');
+            }
+        });
+    }
+    
+    checksAnswer(correctAnswer, target) {
+        target.textContent === correctAnswer ? this.result.push(1) : this.result.push(0); 
     }
 
     getResult() {
-        
         const sumCorrectAnswers = this.result.reduce((acc, el) => acc += el);
         const resultIndex = sumCorrectAnswers / this.result.length;
         let messageResult = '';
         
         if (resultIndex === 1) {
             messageResult = `${sumCorrectAnswers} из ${this.result.length}. Идеально, вы чертов гений. Похоже вы всю жизнь только и делаете что учитесь. Вы уроки не даёте?`;
+
         } else if (0.8 <= resultIndex && resultIndex <= 0.9) {
             messageResult = `${sumCorrectAnswers} из ${this.result.length}. Молодец! Практически идеально.`
             
         } else if (0.4 <= resultIndex && resultIndex <= 0.7) {
             messageResult = `${sumCorrectAnswers} из ${this.result.length}. Ну такое! Рекомендую взяться за голову пока не поздно. Еще чуть-чуть и будет поздно.`
+
         } else if (0.1 <= resultIndex && resultIndex <= 0.3) {
             messageResult = `${sumCorrectAnswers} из ${this.result.length}. Ваши знания практически на нуле.`
+
         } else if (0 === resultIndex) {
             messageResult = `${sumCorrectAnswers} из ${this.result.length}. По-моему вы прогуливали школу. У меня нет слов. Ни одного правильного ответа - вот как так можно? Возьмите пожалуйста учебник в руки, я рекомендую начать с азов!`
         }
@@ -220,13 +242,13 @@ class Quiz {
         this.$QuestionsContainer.firstChild.remove();
                 
         this.$QuestionsContainer.insertAdjacentHTML('afterbegin',
-            `<div class = 'question__wrapper'>
-                <h1 class = 'question__title'>Ваш результат:</h1>
-                <p class = 'question__result'>${messageResult}</p>
+            `<div class = 'questions__wrapper'>
+                <h1 class = 'questions__title'>Ваш результат:</h1>
+                <p class = 'questions__result'>${messageResult}</p>
+                <button class = 'questions__next-test'>К другому тесту</button>
             </div>`
         );
         this.result = [];
     }
 }
-
 new Quiz(questions);

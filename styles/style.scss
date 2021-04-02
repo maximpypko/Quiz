@@ -1,66 +1,88 @@
-// @import "../partial/mixins";
-// @import "../partial/variables";
+@import "../partial/_mixins";
+@import "../partial/_variables";
 
 html {
     font-size: 10px;
 }
 
 body {
-    background:#1D2733;
+    background:$backgroundColor;
 }
 
 .container {
-    max-width: 1280px;
+    width: 90%;
     margin: 0 auto;
 }
 
 .topics {
     display: flex;
     justify-content: space-around;
-    margin-top: 5rem;
-
+    padding: 4rem 0;
     .topics__item {
-        padding: 1rem 2rem;
-        font-size: 1.6rem;
-        text-transform: uppercase;
-        border: 1px solid #9BA8B8;
-        border-radius: .4rem;
-        color: #76879A;
-        background:#3F4C5C;
-        box-shadow: 0 0 1rem 0  #76879A;
-        transition: all .3s ease;
-        cursor: pointer;
+        @include buttonStyle;
+        transition: all .3s ease-in-out;
         &:hover {
-            box-shadow: 0 0 1rem 0 white;
-            color: white;
+            @include hoverBoxShadow;
+            color: $activElementColor;
         }
     }
-    #topics__item--activ {
-        box-shadow: 0 0 1rem 0 white;
-        color: white;
+    .topics__item--activ {
+        @include hoverBoxShadow;
+        color: $activElementColor;
     }
 }
 
-.question__title {
-    font-size: 3rem;
-    color: white;
+.questions__wrapper {
+    padding: 2rem;
+    border-top: 1px solid $textColor;
+    .questions__title {
+        font-size: 3rem; 
+        color: $activElementColor;
+    }
+    .questions__list {
+        margin-top: 4rem;
+        .questions__item {
+            width: max-content;
+            margin-bottom: 2rem;
+            padding: 1rem 3rem;
+            border: 1px solid transparent;
+            border-radius: .4rem;
+            color: $activElementColor;
+            line-height: 3rem;
+            font-size: 2.2rem;
+            cursor: pointer;
+            transition: all .3s ease-in-out;
+            &:hover {
+                @include hoverBoxShadow;
+                border: 1px solid $activElementColor;
+                color: $activElementColor;
+            }
+        }
+    }
+    .questions__result {
+        margin: 2rem 0;
+        color: $textColor;
+        font-size: 2rem;
+    }
+    .questions__buttons {
+        display: flex;
+        justify-content: space-around;
+        padding: 4rem 0;
+        border-top: 1px solid $textColor;
+    }
+    .questions__next-test,
+    .questions__skip,
+    .questions__end,
+    .questions__index {
+        @include buttonStyle;
+        transition: all .3s ease-in-out;
+        &:not(.questions__index):hover {
+            @include hoverBoxShadow;
+            color: $activElementColor;
+        }
+    }
+    .questions__index {
+        display: inline-block;
+        width: max-content;
+    }
 }
-
-.question__item {
-    margin-bottom: 3rem;
-    border:1px solid red;
-    color: burlywood;
-    font-size: 2rem;
-}
-
-.question__item--green {
-    background-color: green;
-}
-
-.question__item--red {
-    background-color: red;
-}
- .question__result {
-    color: burlywood;
-    font-size: 2rem;
- }

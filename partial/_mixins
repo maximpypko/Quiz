@@ -1,0 +1,18 @@
+@mixin buttonStyle {
+    padding: 1rem 2rem;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+    border: 1px solid #9BA8B8;
+    border-radius: .4rem;
+    color: $textColor;
+;
+    background: $backgroundColor;
+    box-shadow: 0 0 1rem 0 $textColor;
+;
+    transition: all .3s ease;
+    cursor: pointer;
+}
+
+@mixin hoverBoxShadow{
+    box-shadow : 0 0 1rem .3rem $activElementColor;
+}
