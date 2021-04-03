@@ -325,18 +325,19 @@ class Quiz {
         
         this.$QuestionsContainer.insertAdjacentHTML('afterbegin',
             `<div class = 'questions__wrapper'>
-                <h1 class = 'questions__title'>${this.activTopic[this.count].question}</h1>
-                <ul class = 'questions__list'>
-                    <li class = 'questions__item'>${this.activTopic[this.count].option1}</li>
-                    <li class = 'questions__item'>${this.activTopic[this.count].option2}</li>
-                    <li class = 'questions__item'>${this.activTopic[this.count].option3}</li>
-                    <li class = 'questions__item'>${this.activTopic[this.count].option4}</li>
-                </ul>
-                <div class = 'questions__buttons'>
-                    <button class = 'questions__skip'>Пропустить вопрос</button>
-                    <button class = 'questions__end'>Закончить тест</button>
+                <div class = 'questions__title-wrapper'>
                     <div class = 'questions__index'>${this.count + 1} из ${this.activTopic.length}</div>
+                    <h1 class = 'questions__title'>${this.activTopic[this.count].question}</h1>
                 </div>
+                
+                <ul class = 'questions__list'>
+                    <li class = 'questions__item questions__item--active'>${this.activTopic[this.count].option1}</li>
+                    <li class = 'questions__item questions__item--active'>${this.activTopic[this.count].option2}</li>
+                    <li class = 'questions__item questions__item--active'>${this.activTopic[this.count].option3}</li>
+                    <li class = 'questions__item questions__item--active'>${this.activTopic[this.count].option4}</li>
+                </ul>
+                <button class = 'questions__skip questions__button--footer'>Пропустить вопрос</button>
+                <button class = 'questions__end questions__button--footer'>Закончить тест</button>
             </div>`
         );
         this.handlerClick();
@@ -347,15 +348,22 @@ class Quiz {
         this.$QuestionsContainer.addEventListener('click', (e) => {
             e.stopImmediatePropagation();
             
-            if (e.target.closest('.questions__item') && this.count < this.activTopic.length - 1) {
+            if (e.target.closest('.questions__item--active') &&
+                this.count < this.activTopic.length - 1) {
+                
                 this.checksAnswer(this.activTopic[this.count].correctAnswer, e.target);
                 ++this.count;
 
+                const arr = document.querySelectorAll('.questions__item--active');
+                arr.forEach(el => {
+                    el.classList.remove('questions__item--active');
+                })
+                
                 e.target.textContent === this.activTopic[this.count - 1].correctAnswer ?
                     e.target.classList.add('questions__item--correctAnswer') :
                     e.target.classList.add('questions__item--wrongAnswer');
                 
-                setTimeout(() => this.renderTopic(), 2000)
+                setTimeout(() => this.renderTopic(), 2000);
 
             } else if (e.target.closest('.questions__skip') &&
                 this.count < this.activTopic.length - 1) {

@@ -33,14 +33,24 @@ body {
 }
 
 .questions__wrapper {
-    padding: 2rem;
+    padding-top: 3rem;
     border-top: 1px solid $textColor;
-    .questions__title {
-        font-size: 3rem; 
-        color: $activElementColor;
+    .questions__title-wrapper{
+        display: flex;
+        .questions__index {
+            width: max-content;
+            margin-right: 2rem;
+            @include hoverBoxShadow;
+            color: $activElementColor;
+        }
+        .questions__title {
+            font-size: 3rem; 
+            color: $activElementColor;
+        }
     }
     .questions__list {
-        margin-top: 4rem;
+        margin: 4rem 0;
+        border-bottom: 1px solid $textColor;
         .questions__item {
             width: max-content;
             margin-bottom: 2rem;
@@ -51,31 +61,23 @@ body {
             line-height: 3rem;
             font-size: 2.2rem;
             cursor: pointer;
-            transition: all .3s ease-in-out;
-            &:hover {
-                @include hoverBoxShadow;
-                border: 1px solid $activElementColor;
-            }
+            box-shadow : 1px 1px 3px 1px $activElementColor;
         }
         .questions__item--correctAnswer {
-            box-shadow : 0 0 1rem .5rem #46FF4F;
-            pointer-events:none;
+            background: #46FF4F;
+            color: black;
+            box-shadow : 1px 1px 3px 1px black;
         }
         .questions__item--wrongAnswer {
-            box-shadow : 0 0 1rem .5rem #FF0800;
-            pointer-events:none;
+            background: #FF0800;
+            color: black;
+            box-shadow : 1px 1px 3px 1px black;
         }
     }
     .questions__result {
         margin: 2rem 0;
         color: $textColor;
         font-size: 2rem;
-    }
-    .questions__buttons {
-        display: flex;
-        justify-content: space-around;
-        padding: 4rem 0;
-        border-top: 1px solid $textColor;
     }
     .questions__next-test,
     .questions__skip,
@@ -88,8 +90,7 @@ body {
             color: $activElementColor;
         }
     }
-    .questions__index {
-        display: inline-block;
-        width: max-content;
+    .questions__button--footer:not(:first-of-type) {
+        margin-left: 1rem;
     }
 }
