@@ -288,8 +288,10 @@ const questions = {
 }
 
 class Quiz {
-    $topicsContainer = document.querySelector('.topics')
+    $container = document.querySelector('.container');
+    $topicsContainer = document.querySelector('.topics');
     $QuestionsContainer = document.querySelector('.questions');
+    $footer = document.querySelector('.footer');
     result = [];
     activTopic = null;
     count = null;
@@ -322,11 +324,10 @@ class Quiz {
         if (this.$QuestionsContainer.firstChild) {
             this.$QuestionsContainer.firstChild.remove(); 
         }
-        
         this.$QuestionsContainer.insertAdjacentHTML('afterbegin',
             `<div class = 'questions__wrapper'>
                 <div class = 'questions__title-wrapper'>
-                    <div class = 'questions__index'>${this.count + 1} из ${this.activTopic.length}</div>
+                    <div class = 'questions__index'>${this.count + 1} / ${this.activTopic.length}</div>
                     <h1 class = 'questions__title'>${this.activTopic[this.count].question}</h1>
                 </div>
                 
@@ -336,10 +337,10 @@ class Quiz {
                     <li class = 'questions__item questions__item--active'>${this.activTopic[this.count].option3}</li>
                     <li class = 'questions__item questions__item--active'>${this.activTopic[this.count].option4}</li>
                 </ul>
-                <button class = 'questions__skip questions__button--footer'>Пропустить вопрос</button>
-                <button class = 'questions__end questions__button--footer'>Закончить тест</button>
             </div>`
         );
+        this.$container.style.display = 'flex';
+        this.$footer.style.display = 'flex';
         this.handlerClick();
     }
 
@@ -365,22 +366,31 @@ class Quiz {
                 
                 setTimeout(() => this.renderTopic(), 2000);
 
-            } else if (e.target.closest('.questions__skip') &&
-                this.count < this.activTopic.length - 1) {
-                this.result.push(0);
-                ++this.count;
-                this.renderTopic();
-
-            } else if (e.target.closest('.questions__end') &&
-                this.count <= this.activTopic.length - 1) {
-                this.result = [];
-                this.resetStateTopicItem();
-
             } else if (e.target.closest('.questions__next-test')) {
                 this.resetStateTopicItem();
             }
                 
-            else if (this.count === this.activTopic.length - 1) {
+            
+        })
+
+        this.$footer.addEventListener('click', e => {
+            e.stopImmediatePropagation();
+
+            if (e.target.closest('.footer__button--scip') && this.count < this.activTopic.length - 1) {
+                this.result.push(0);
+                ++this.count;
+                this.renderTopic();
+
+            } else if (e.target.closest('.footer__button--end') &&
+                this.count <= this.activTopic.length - 1) {
+                this.$container.style.display = 'block'; 
+                this.$footer.style.display = 'none';
+                this.result = [];
+                this.resetStateTopicItem();
+
+            } else if (this.count === this.activTopic.length - 1) {
+                this.$footer.style.display = 'none';
+                this.$container.style.display = 'block'; 
                 this.checksAnswer(this.activTopic[this.count].correctAnswer, e.target);
                 this.getResult();
                 this.count = 0;
@@ -427,7 +437,7 @@ class Quiz {
         this.$QuestionsContainer.firstChild.remove();
                 
         this.$QuestionsContainer.insertAdjacentHTML('afterbegin',
-            `<div class = 'questions__wrapper'>
+            `<div class = 'questions__wrapper questions__wrapper--position'>
                 <h1 class = 'questions__title'>Ваш результат:</h1>
                 <p class = 'questions__result'>${messageResult}</p>
                 <button class = 'questions__next-test'>К другому тесту</button>
