@@ -72,20 +72,18 @@ body {
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-        margin-left:2rem ;
+        margin: 0 2rem ;
         .questions__item {
             width: fit-content;
             margin-bottom: 2rem;
             padding: 1rem 2rem;
-            border: 1px solid transparent;
             color: $activElementColor;
             font-size: 2.2rem;
             cursor: pointer;
             border-left: 3px solid transparent;
-            transition: all .3s ease-in-out;
-            &:hover {
-                border-left-color: $textColor;
-            }
+            border-right: 3px solid transparent;
+            border-radius: .4rem;
+            transition: all .5s ease-in-out;
         }
         .questions__item:last-of-type {
             margin-bottom: 0;

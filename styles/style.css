@@ -115,7 +115,7 @@ body {
           flex-direction: column;
   -ms-flex-pack: distribute;
       justify-content: space-around;
-  margin-left: 2rem;
+  margin: 0 2rem;
 }
 
 .questions__wrapper .questions__list .questions__item {
@@ -124,17 +124,14 @@ body {
   width: fit-content;
   margin-bottom: 2rem;
   padding: 1rem 2rem;
-  border: 1px solid transparent;
   color: #FFF;
   font-size: 2.2rem;
   cursor: pointer;
   border-left: 3px solid transparent;
-  -webkit-transition: all .3s ease-in-out;
-  transition: all .3s ease-in-out;
-}
-
-.questions__wrapper .questions__list .questions__item:hover {
-  border-left-color: #AFB2C0;
+  border-right: 3px solid transparent;
+  border-radius: .4rem;
+  -webkit-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
 }
 
 .questions__wrapper .questions__list .questions__item:last-of-type {

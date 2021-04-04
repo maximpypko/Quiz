@@ -360,17 +360,23 @@ class Quiz {
                     el.classList.remove('questions__item--active');
                 })
                 
-                e.target.textContent === this.activTopic[this.count - 1].correctAnswer ?
-                    e.target.classList.add('questions__item--correctAnswer') :
-                    e.target.classList.add('questions__item--wrongAnswer');
-                
+                this.checksCorrectAnswer(e.target);
                 setTimeout(() => this.renderTopic(), 2000);
 
-            } else if (e.target.closest('.questions__next-test')) {
+            } else if (this.count === this.activTopic.length - 1) {
+                this.checksCorrectAnswer(e.target);
+                this.count = 0;
+                this.checksAnswer(this.activTopic[this.count].correctAnswer, e.target);
+                
+                setTimeout(() => {
+                    this.$footer.style.display = 'none';
+                    this.$container.style.display = 'block'; 
+                    this.getResult();
+                }, 2000);
+
+            }else if (e.target.closest('.questions__next-test')) {
                 this.resetStateTopicItem();
             }
-                
-            
         })
 
         this.$footer.addEventListener('click', e => {
@@ -398,6 +404,12 @@ class Quiz {
         })
     }
 
+    checksCorrectAnswer(target) {
+        target.textContent === this.activTopic[this.count - 1].correctAnswer ?
+        target.classList.add('questions__item--correctAnswer') :
+        target.classList.add('questions__item--wrongAnswer');
+    }
+
     resetStateTopicItem() {
         this.$QuestionsContainer.firstChild.remove();
         const arrayTarget = Array.from(this.$topicsContainer.children);
@@ -410,7 +422,7 @@ class Quiz {
     }
 
     checksAnswer(correctAnswer, target) {
-        target.textContent === correctAnswer ? this.result.push(1) : this.result.push(0); 
+        target.textContent === correctAnswer ? this.result.push(1) : this.result.push(0);
     }
 
     getResult() {
