@@ -1,18 +1,27 @@
 @mixin buttonStyle {
+    border:none;
     padding: 1rem 2rem;
+    font-family: 'Mukta', sans-serif; 
+    font-weight: 300;
     font-size: 1.6rem;
     text-transform: uppercase;
-    border: 1px solid #9BA8B8;
-    border-radius: .4rem;
+    border-radius: .7rem;
     color: $textColor;
-;
-    background: $backgroundColor;
-    box-shadow: 0 0 1rem 0 $textColor;
-;
-    transition: all .3s ease;
+    background-image: linear-gradient(to right top, #7fea9e, #62e4ab, #45dcb7, #26d5c1, #00ccc9);
     cursor: pointer;
+    transition: all .3s ease-in-out;
 }
 
 @mixin hoverBoxShadow{
-    box-shadow : 0 0 1rem .3rem $activElementColor;
+    background-image: linear-gradient(to right top, #00ccc9, #26d5c1, #45dcb7, #62e4ab, #7fea9e);
+    box-shadow: inset 0 0 5px 1px #205F80;
+}  
+
+@mixin buttonSmallScreen {
+    padding: 1rem 2rem;
+    font-size: 2.2rem;
+}
+
+@mixin boxShadowAnswersItem {
+    box-shadow: 1px 1px 3px 1px #205F80;
 }

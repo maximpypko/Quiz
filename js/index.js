@@ -353,6 +353,8 @@ class Quiz {
                 this.count < this.activTopic.length - 1) {
                 
                 this.checksAnswer(this.activTopic[this.count].correctAnswer, e.target);
+                this.checksCorrectAnswer(e.target, this.activTopic[this.count].correctAnswer);
+
                 ++this.count;
 
                 const arr = document.querySelectorAll('.questions__item--active');
@@ -360,19 +362,19 @@ class Quiz {
                     el.classList.remove('questions__item--active');
                 })
                 
-                this.checksCorrectAnswer(e.target);
-                setTimeout(() => this.renderTopic(), 2000);
+                setTimeout(() => this.renderTopic(), 1000);
 
             } else if (this.count === this.activTopic.length - 1) {
-                this.checksCorrectAnswer(e.target);
-                this.count = 0;
-                this.checksAnswer(this.activTopic[this.count].correctAnswer, e.target);
                 
+                this.checksCorrectAnswer(e.target, this.activTopic[this.count].correctAnswer);
+                this.checksAnswer(this.activTopic[this.count].correctAnswer, e.target);
+            
                 setTimeout(() => {
                     this.$footer.style.display = 'none';
                     this.$container.style.display = 'block'; 
                     this.getResult();
-                }, 2000);
+                }, 1000);
+                this.count = 0;
 
             }else if (e.target.closest('.questions__next-test')) {
                 this.resetStateTopicItem();
@@ -382,7 +384,9 @@ class Quiz {
         this.$footer.addEventListener('click', e => {
             e.stopImmediatePropagation();
 
-            if (e.target.closest('.footer__button--scip') && this.count < this.activTopic.length - 1) {
+            if (e.target.closest('.footer__button--scip') &&
+                this.count < this.activTopic.length - 1) {
+                
                 this.result.push(0);
                 ++this.count;
                 this.renderTopic();
@@ -404,8 +408,8 @@ class Quiz {
         })
     }
 
-    checksCorrectAnswer(target) {
-        target.textContent === this.activTopic[this.count - 1].correctAnswer ?
+    checksCorrectAnswer(target, correctAnswer) {
+        target.textContent === correctAnswer ?
         target.classList.add('questions__item--correctAnswer') :
         target.classList.add('questions__item--wrongAnswer');
     }
